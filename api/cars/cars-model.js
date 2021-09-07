@@ -1,4 +1,4 @@
-const db = require("../../data/db-config");
+const db = require("./../../data/db-config");
 
 const getAll = () => {
   return db("cars");
@@ -8,12 +8,10 @@ const getById = (id) => {
   return db("cars").where({ id }).first();
 };
 
-const create = (car) => {
-  return db("cars")
-    .insert(car)
-    .then((ids) => {
-      return getById(ids[0]);
-    });
+const create = async (car) => {
+  const [id] = await db("cars").insert(car);
+  const newCar = await getById(id);
+  return newCar;
 };
 
 module.exports = {
